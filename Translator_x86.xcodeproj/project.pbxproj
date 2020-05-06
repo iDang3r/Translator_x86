@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		FACC3DFC245EE8AA00EEA44C /* Translator_x86 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Translator_x86; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACC3DFF245EE8AA00EEA44C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		FACC3E0624616FA500EEA44C /* comands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = comands.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				FACC3DFF245EE8AA00EEA44C /* main.cpp */,
+				FACC3E0624616FA500EEA44C /* comands.h */,
 			);
 			path = Translator_x86;
 			sourceTree = "<group>";
@@ -238,16 +240,34 @@
 		FACC3E04245EE8AA00EEA44C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GENERATE_PROFILING_CODE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				TREAT_MISSING_BASELINES_AS_TEST_FAILURES = YES;
 			};
 			name = Debug;
 		};
 		FACC3E05245EE8AA00EEA44C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GENERATE_PROFILING_CODE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				TREAT_MISSING_BASELINES_AS_TEST_FAILURES = YES;
 			};
 			name = Release;
 		};
