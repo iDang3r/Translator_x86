@@ -65,32 +65,7 @@ uint32_t precision = 100;
 
 }
 
-size_t get_buffer(FILE* in, char* *r_buffer) {
-
-    assert(in);
-
-    fseek(in, 0, SEEK_END);
-    size_t input_file_size = ftell(in);
-    rewind(in);
-
-    char* buffer = (char*)calloc(input_file_size + 2, sizeof(char));
-    if (buffer == nullptr) {
-        throw runtime_error("calloc did not allocate memory");
-        return 0;
-    }
-
-    *r_buffer = buffer;
-
-    size_t buffer_size = fread(buffer, sizeof(char), input_file_size, in);
-    if (buffer_size != input_file_size) {
-        cout << input_file_size << " " << buffer_size << endl;
-        *r_buffer = nullptr;
-        throw runtime_error("size of file and size of buffer are not equal");
-        return 0;
-    }
-
-    return buffer_size;
-}
+size_t get_buffer(FILE* in, char* *r_buffer);
 
 uint32_t make_header(char* buff, uint32_t buff_size);
 
@@ -670,4 +645,31 @@ void find_calls(char* p, char* p_end, map<string, uint32_t> &calls) {
         
     }
     
+}
+
+size_t get_buffer(FILE* in, char* *r_buffer) {
+
+    assert(in);
+
+    fseek(in, 0, SEEK_END);
+    size_t input_file_size = ftell(in);
+    rewind(in);
+
+    char* buffer = (char*)calloc(input_file_size + 2, sizeof(char));
+    if (buffer == nullptr) {
+        throw runtime_error("calloc did not allocate memory");
+        return 0;
+    }
+
+    *r_buffer = buffer;
+
+    size_t buffer_size = fread(buffer, sizeof(char), input_file_size, in);
+    if (buffer_size != input_file_size) {
+        cout << input_file_size << " " << buffer_size << endl;
+        *r_buffer = nullptr;
+        throw runtime_error("size of file and size of buffer are not equal");
+        return 0;
+    }
+
+    return buffer_size;
 }
