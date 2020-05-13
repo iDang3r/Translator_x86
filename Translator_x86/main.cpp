@@ -15,8 +15,6 @@
 #include <string>
 using namespace std;
 
-//#define w(x) cout << #x << ": " << x << endl;
-
 struct thread_status {
     
     uint32_t    cmd;
@@ -104,6 +102,10 @@ void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_
 int main(int argc, const char* argv[]) {
 
     FILE* out = fopen("/Users/alex/Desktop/configi/test", "wb");
+    if (out == nullptr) {
+        cout << "output file was not opened or created" << endl;
+        return 0;
+    }
     
     char* buff = (char*)calloc(offsets::size, sizeof(char));
     uint32_t buff_size = offsets::size;
@@ -139,8 +141,6 @@ int main(int argc, const char* argv[]) {
     }
     
     fwrite(buff, sizeof(char), buff_size, out);
-    
-    cout << endl;
     
     free(buff);
     free(lang_asm);
@@ -200,8 +200,8 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
     Text.vmsize      = 0x1000;
     Text.fileoff     = 0;
     Text.filesize    = 0x1000;
-    Text.maxprot     = VM_PROT_READ | VM_PROT_EXECUTE | VM_PROT_WRITE;
-    Text.initprot    = VM_PROT_READ | VM_PROT_EXECUTE | VM_PROT_WRITE;
+    Text.maxprot     = VM_PROT_READ | VM_PROT_EXECUTE;
+    Text.initprot    = VM_PROT_READ | VM_PROT_EXECUTE;
     Text.nsects      = 1;
     Text.flags       = 0;
 
