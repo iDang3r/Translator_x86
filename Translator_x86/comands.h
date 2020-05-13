@@ -27,30 +27,6 @@
     if (labels[name_of_command] == 0)                \
         second_assembling = true                     \
 
-char* scan(uint32_t adr) {
-    
-    static char code[] = {
-        0xE8, 0x00, 0x00, 0x00, 0x00
-    };
-    
-    *(uint32_t*)(code + 1) = adr;
-    
-    return code;
-}
-uint32_t scan_size = 5;
-
-char* print(uint32_t adr) {
-    
-    static char code[] = {
-        0xE8, 0x00, 0x00, 0x00, 0x00
-    };
-    
-    *(uint32_t*)(code + 1) = adr;
-    
-    return code;
-}
-uint32_t print_size = 5;
-
 char* call(uint32_t adr) {
     
     static char code[] = {
@@ -273,18 +249,371 @@ char* pop_r12() {
 }
 uint32_t pop_r12_size = 2;
 
-char* add() {
+char* add_r9_r10() {
     
     static char code[] = {
-        0x41, 0x59,
-        0x41, 0x5A,
-        0x4D, 0x01, 0xD1,
-        0x41, 0x51
+        0x4D, 0x01, 0xD1
     };
     
     return code;
 }
-uint32_t add_size = 9;
+uint32_t add_r9_r10_size = 3;
+
+char* sub_r10_r9() {
+    
+    static char code[] = {
+        0x4D, 0x29, 0xCA
+    };
+    
+    return code;
+}
+uint32_t sub_r10_r9_size = 3;
+
+char* mov_r15_rax() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xC7
+    };
+    
+    return code;
+}
+uint32_t mov_r15_rax_size = 3;
+
+char* mov_r14_rbx() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xDE
+    };
+    
+    return code;
+}
+uint32_t mov_r14_rbx_size = 3;
+
+char* mov_r13_rcx() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xCD
+    };
+    
+    return code;
+}
+uint32_t mov_r13_rcx_size = 3;
+
+char* mov_r12_rdx() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xD4
+    };
+    
+    return code;
+}
+uint32_t mov_r12_rdx_size = 3;
+
+char* mov_r11_rsi() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xF3
+    };
+    
+    return code;
+}
+uint32_t mov_r11_rsi_size = 3;
+
+char* mov_r14_rdx() {
+    
+    static char code[] = {
+        0x49, 0x89, 0xD6
+    };
+    
+    return code;
+}
+uint32_t mov_r14_rdx_size = 3;
+
+char* mov_rax_r15() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xF8
+    };
+    
+    return code;
+}
+uint32_t mov_rax_r15_size = 3;
+
+char* mov_rbx_r14() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xF3
+    };
+    
+    return code;
+}
+uint32_t mov_rbx_r14_size = 3;
+
+char* mov_rcx_r13() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xE9
+    };
+    
+    return code;
+}
+uint32_t mov_rcx_r13_size = 3;
+
+char* mov_rdx_r12() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xE2
+    };
+    
+    return code;
+}
+uint32_t mov_rdx_r12_size = 3;
+
+char* mov_rsi_r11() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xDE
+    };
+    
+    return code;
+}
+uint32_t mov_rsi_r11_size = 3;
+
+char* mov_rdx_r14() {
+    
+    static char code[] = {
+        0x4C, 0x89, 0xF2
+    };
+    
+    return code;
+}
+uint32_t mov_rdx_r14_size = 3;
+
+char* mul_r9() {
+    
+    static char code[] = {
+        0x41, 0xF7, 0xE9
+    };
+    
+    return code;
+}
+uint32_t mul_r9_size = 3;
+
+char* mov_r9_0x64() {
+    
+    static char code[] = {
+        0x41, 0xB9, 0x64, 0x00, 0x00, 0x00
+    };
+    
+    return code;
+}
+uint32_t mov_r9_0x64_size = 6;
+
+char* cdq() {
+    
+    static char code[] = {
+        0x99
+    };
+    
+    return code;
+}
+uint32_t cdq_size = 1;
+
+char* div_r9() {
+    
+    static char code[] = {
+        0x41, 0xF7, 0xF9
+    };
+    
+    return code;
+}
+uint32_t div_r9_size = 3;
+
+char* div_r10() {
+    
+    static char code[] = {
+        0x41, 0xF7, 0xFA
+    };
+    
+    return code;
+}
+uint32_t div_r10_size = 3;
+
+char* xor_rdx() {
+    
+    static char code[] = {
+        0x48, 0x31, 0xD2
+    };
+    
+    return code;
+}
+uint32_t xor_rdx_size = 3;
+
+char* xor_rbx() {
+    
+    static char code[] = {
+        0x48, 0x31, 0xDB
+    };
+    
+    return code;
+}
+uint32_t xor_rbx_size = 3;
+
+char* bsr_ecx_eax() {
+    
+    static char code[] = {
+        0x0F, 0xBD, 0xC8
+    };
+    
+    return code;
+}
+uint32_t bsr_ecx_eax_size = 3;
+
+char* and_cl_0xFE() {
+    
+    static char code[] = {
+        0x80, 0xE1, 0xFE
+    };
+    
+    return code;
+}
+uint32_t and_cl_0xFE_size = 3;
+
+char* mov_edx_0x1() {
+    
+    static char code[] = {
+        0xBA, 0x01, 0x00, 0x00, 0x00
+    };
+    
+    return code;
+}
+uint32_t mov_edx_0x1_size = 5;
+
+char* shl_edx_cl() {
+    
+    static char code[] = {
+        0xD3, 0xE2
+    };
+    
+    return code;
+}
+uint32_t shl_edx_cl_size = 2;
+
+char* mov_esi_ebx() {
+    
+    static char code[] = {
+        0x89, 0xDE
+    };
+    
+    return code;
+}
+uint32_t mov_esi_ebx_size = 2;
+
+char* add_esi_edx() {
+    
+    static char code[] = {
+        0x01, 0xD6
+    };
+    
+    return code;
+}
+uint32_t add_esi_edx_size = 2;
+
+char* cmp_esi_eax() {
+    
+    static char code[] = {
+        0x39, 0xC6
+    };
+    
+    return code;
+}
+uint32_t cmp_esi_eax_size = 2;
+
+char* ja_byte(char adr) {
+    
+    static char code[] = {
+        0x77, 0x00
+    };
+    code[1] = adr;
+    
+    return code;
+}
+uint32_t ja_byte_size = 2;
+
+char* sub_eax_esi() {
+    
+    static char code[] = {
+        0x29, 0xF0
+    };
+    
+    return code;
+}
+uint32_t sub_eax_esi_size = 2;
+
+char* shr_ebx() {
+    
+    static char code[] = {
+        0xD1, 0xEB
+    };
+    
+    return code;
+}
+uint32_t shr_ebx_size = 2;
+
+char* add_ebx_edx() {
+    
+    static char code[] = {
+        0x01, 0xD3
+    };
+    
+    return code;
+}
+uint32_t add_ebx_edx_size = 2;
+
+char* jmp_byte(char adr) {
+    
+    static char code[] = {
+        0xEB, 0x00
+    };
+    code[1] = adr;
+    
+    return code;
+}
+uint32_t jmp_byte_size = 2;
+
+char* shr_edx_0x2() {
+    
+    static char code[] = {
+        0xC1, 0xEA, 0x02
+    };
+    
+    return code;
+}
+uint32_t shr_edx_0x2_size = 3;
+
+char* jne_byte(char adr) {
+    
+    static char code[] = {
+        0x75, 0x00
+    };
+    code[1] = adr;
+    
+    return code;
+}
+uint32_t jne_byte_size = 2;
+
+//char* add() {
+//
+//    static char code[] = {
+//        0x41, 0x59,
+//        0x41, 0x5A,
+//        0x4D, 0x01, 0xD1,
+//        0x41, 0x51
+//    };
+//
+//    return code;
+//}
+//uint32_t add_size = 9;
 
 char* sub() {
     

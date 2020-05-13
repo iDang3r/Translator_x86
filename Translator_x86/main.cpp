@@ -399,23 +399,88 @@ void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_
             
         } else if (!strcmp(name_of_command, "add")) {
             
-            command(add);
+            command(pop_r9);
+            command(pop_r10);
+            command(add_r9_r10);
+            command(push_r9);
             
         } else if (!strcmp(name_of_command, "sub")) {
             
-            command(sub);
+            command(pop_r9);
+            command(pop_r10);
+            command(sub_r10_r9);
+            command(push_r10);
             
         } else if (!strcmp(name_of_command, "mul")) {
             
-            command(mul);
+            command(mov_r15_rax);
+            command(mov_r14_rdx);
+            command(pop_rax);
+            command(pop_r9);
+            command(mul_r9);
+            command(mov_r9_0x64);
+            command(cdq);
+            command(div_r9);
+            command(push_rax);
+            command(mov_rax_r15);
+            command(mov_rdx_r14);
             
         } else if (!strcmp(name_of_command, "div")) {
             
-            command(div);
+            command(mov_r15_rax);
+            command(mov_r14_rdx);
+            
+            command(pop_r10);
+            command(pop_rax);
+            command(mov_r9_0x64);
+            command(mul_r9);
+            command(cdq);
+            command(div_r10);
+            command(push_rax);
+            
+            command(mov_rax_r15);
+            command(mov_rdx_r14);
             
         } else if (!strcmp(name_of_command, "sqrt")) {
             
-            command(sqrt);
+//            command(sqrt);
+            command(mov_r15_rax);
+            command(mov_r14_rbx);
+            command(mov_r13_rcx);
+            command(mov_r12_rdx);
+            command(mov_r11_rsi);
+            
+            command(xor_rdx);         ///
+            command(pop_rax);         ///
+            command(mov_r9_0x64);     ///
+            command(mul_r9);          ///
+            command(xor_rbx);         ///
+            command(bsr_ecx_eax);     ///
+            command(and_cl_0xFE);     ///
+            command(mov_edx_0x1);     ///
+            command(shl_edx_cl);      ///
+            
+            command(mov_esi_ebx);     ///<<-------------@
+            command(add_esi_edx);     ///               |
+            command(cmp_esi_eax);     ///               |
+            command_p(ja_byte, 0x08); ///>>--------@    |
+            command(sub_eax_esi);     ///          |    |
+            command(shr_ebx);         ///          |    |
+            command(add_ebx_edx);     ///          |    |
+            command_p(jmp_byte, 0x02);///>>---@    |    |
+                                      ///     |    |    |
+            command(shr_ebx);         ///<<---+----@    |
+                                      ///     |         |
+            command(shr_edx_0x2);     ///<<---@         |
+            command_p(jne_byte, 0xE9);///>>-------------@
+            
+            command(push_rbx);        ///
+            
+            command(mov_rax_r15);
+            command(mov_rbx_r14);
+            command(mov_rcx_r13);
+            command(mov_rdx_r12);
+            command(mov_rsi_r11);
             
         } else if (!strcmp(name_of_command, "call")) {
             
@@ -431,13 +496,13 @@ void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_
             
         } else if (!strcmp(name_of_command, "in")) {
             
-            jump(scan, offsets::scan_offset);
+            jump(call, offsets::scan_offset);
             command(push_r9);
             
         } else if (!strcmp(name_of_command, "out")) {
             
             command(pop_r9);
-            jump(print, offsets::print_offset);
+            jump(call, offsets::print_offset);
             
         } else if (!strcmp(name_of_command, "inc")) {
             
