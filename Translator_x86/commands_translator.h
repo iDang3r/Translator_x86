@@ -27,22 +27,26 @@
     if (labels[name_of_command] == 0)                \
         second_assembling = true                     \
 
-char* call(uint32_t adr) {
+char* call(uint32_t addr) {
     
-    static char code[] = {
-        0xE8, 0x00, 0x00, 0x00, 0x00
-    };
+#pragma pack(push, 1)
+    static struct {
+        const u_char op = 0xE8; // call addr64
+        uint32_t     addres;
+    } code;
+#pragma pack(pop)
     
-    *(uint32_t*)(code + 1) = adr;
+    code.addres = addr;
+//    *(uint32_t*)(code + 1) = adr;
     
-    return code;
+    return (char*)&code;
 }
 uint32_t call_size = 5;
 
 char* ret() {
     
     static char code[] = {
-        0xC3
+        0xC3       // ret
     };
     
     return code;

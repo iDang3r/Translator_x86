@@ -10,9 +10,9 @@
 #include <mach-o/loader.h>
 #include <mach/machine/thread_status.h>
 #include <iomanip>
-#include "comands.h"
-#include <map>
-#include <string>
+#include "commands_translator.h"
+#include "my_map.h"
+
 using namespace std;
 
 struct thread_status {
@@ -69,10 +69,10 @@ size_t get_buffer(FILE* in, char* *r_buffer);
 
 uint32_t make_header(char* buff, uint32_t buff_size);
 
-void find_calls(char* p, char* p_end, map<string, uint32_t> &calls);
+void find_calls(char* p, char* p_end, my_map &calls);
 
 void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_end,
-                map<string, uint32_t> &labels, bool &second_assembling, map<string, uint32_t> &calls);
+                my_map &labels, bool &second_assembling, my_map &calls);
 
 int main(int argc, const char* argv[]) {
 
@@ -104,8 +104,8 @@ int main(int argc, const char* argv[]) {
     
     bool need_second_assembling = false;
     
-    map<string, uint32_t> labels;
-    map<string, uint32_t> calls;
+    my_map labels;
+    my_map calls;
     
     find_calls(p, p_end, calls);
     
@@ -129,45 +129,52 @@ int main(int argc, const char* argv[]) {
 }
 
 uint32_t make_header(char* buff, uint32_t buff_size) {
+//
+//    const int asd[100] = {
+//        [50] = 7, [60] = 8
+//    };
     
     uint32_t offset = 0;
     
     //--> Head
 
-    mach_header_64 Head;
-    Head.magic      = MH_MAGIC_64;
-    Head.cputype    = CPU_TYPE_X86_64;
-    Head.cpusubtype = CPU_SUBTYPE_X86_64_ALL;
-    Head.filetype   = MH_EXECUTE;
-    Head.ncmds      = 4;
-    Head.sizeofcmds = 3 * sizeof(segment_command_64) + 2 * sizeof(section_64) + sizeof(thread_status);
-    Head.flags      = MH_NOUNDEFS | MH_DYLDLINK | MH_TWOLEVEL;
-    Head.reserved   = 0;
+    mach_header_64 Head = {
+        .magic      = MH_MAGIC_64,
+        .cputype    = CPU_TYPE_X86_64,
+        .cpusubtype = CPU_SUBTYPE_X86_64_ALL,
+        .filetype   = MH_EXECUTE,
+        .ncmds      = 4,
+        .sizeofcmds = 3 * sizeof(segment_command_64) + 2 * sizeof(section_64) + sizeof(thread_status),
+        .flags      = MH_NOUNDEFS | MH_DYLDLINK | MH_TWOLEVEL,
+        .reserved   = 0
+    };
 
     memcpy(buff + offset, &Head, sizeof(mach_header_64));
     offset += sizeof(mach_header_64);
 
     //-->
 
-    segment_command_64 segZero;
-    segZero.cmd      = LC_SEGMENT_64;
-    segZero.cmdsize  = sizeof(segment_command_64);
+    segment_command_64 segZero = {
+        .cmd      = LC_SEGMENT_64,
+        .cmdsize  = sizeof(segment_command_64),
+//    segZero.segname, "__PAGEZERO\0\0\0\0\0\0", 16)
+        .vmaddr   = 0,
+        .vmsize   = 0x100000000,
+        .fileoff  = 0,
+        .filesize = 0,
+        .maxprot  = VM_PROT_NONE,
+        .initprot = VM_PROT_NONE,
+        .nsects   = 0,
+        .flags    = 0
+    };
     memcpy(segZero.segname, "__PAGEZERO\0\0\0\0\0\0", 16);
-    segZero.vmaddr   = 0;
-    segZero.vmsize   = 0x100000000;
-    segZero.fileoff  = 0;
-    segZero.filesize = 0;
-    segZero.maxprot  = VM_PROT_NONE;
-    segZero.initprot = VM_PROT_NONE;
-    segZero.nsects   = 0;
-    segZero.flags    = 0;
-
+    
     memcpy(buff + offset, &segZero, sizeof(segment_command_64));
     offset += sizeof(segment_command_64);
 
     //-->
 
-    segment_command_64 Text;
+    segment_command_64 Text {};
     Text.cmd         = LC_SEGMENT_64;
     Text.cmdsize     = sizeof(segment_command_64) + sizeof(section_64);
     memcpy(Text.segname, "__TEXT\0\0\0\0\0\0\0\0\0\0", 16);
@@ -185,7 +192,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 
     //-->
 
-    section_64 text;
+    section_64 text {};
     memcpy(text.sectname, "__text\0\0\0\0\0\0\0\0\0\0", 16);
     memcpy(text.segname,  "__TEXT\0\0\0\0\0\0\0\0\0\0", 16);
     text.addr        = 0x100000000 | offsets::main_offset;              ///<---- TODO address
@@ -204,7 +211,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 
     //-->
 
-    segment_command_64 Data;
+    segment_command_64 Data {};
     Data.cmd         = LC_SEGMENT_64;
     Data.cmdsize     = sizeof(segment_command_64) + sizeof(section_64);
     memcpy(Data.segname, "__DATA\0\0\0\0\0\0\0\0\0\0", 16);
@@ -222,7 +229,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 
     //-->
 
-    section_64 data;
+    section_64 data {};
     memcpy(data.sectname, "__data\0\0\0\0\0\0\0\0\0\0", 16);
     memcpy(data.segname,  "__DATA\0\0\0\0\0\0\0\0\0\0", 16);
     data.addr        = 0x100000000 | 0x1000;
@@ -241,7 +248,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 
     //-->
 
-    thread_status unixth;
+    thread_status unixth {};
     unixth.cmd       = LC_UNIXTHREAD;
     unixth.cmdsize   = sizeof(thread_status);
     unixth.flavor    = x86_THREAD_STATE64;
@@ -290,7 +297,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 
 
 void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_end,
-                map<string, uint32_t> &labels, bool &second_assembling, map<string, uint32_t> &calls) {
+                my_map &labels, bool &second_assembling, my_map &calls) {
     
     int n = 0;
     uint32_t x = 0;
@@ -418,7 +425,6 @@ void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_
             
         } else if (!strcmp(name_of_command, "sqrt")) {
             
-//            command(sqrt);
             command(mov_r15_rax);
             command(mov_r14_rbx);
             command(mov_r13_rcx);
@@ -615,7 +621,7 @@ void assembling(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_
     
 }
 
-void find_calls(char* p, char* p_end, map<string, uint32_t> &calls) {
+void find_calls(char* p, char* p_end, my_map &calls) {
     
     int n = 0;
     char name_of_command[100 + 1] = {};

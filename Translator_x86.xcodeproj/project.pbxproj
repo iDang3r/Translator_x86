@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,7 +25,7 @@
 /* Begin PBXFileReference section */
 		FACC3DFC245EE8AA00EEA44C /* Translator_x86 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Translator_x86; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACC3DFF245EE8AA00EEA44C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		FACC3E0624616FA500EEA44C /* comands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = comands.h; sourceTree = "<group>"; };
+		FACC3E0624616FA500EEA44C /* commands_translator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = commands_translator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				FACC3DFF245EE8AA00EEA44C /* main.cpp */,
-				FACC3E0624616FA500EEA44C /* comands.h */,
+				FACC3E0624616FA500EEA44C /* commands_translator.h */,
 			);
 			path = Translator_x86;
 			sourceTree = "<group>";
@@ -90,6 +90,7 @@
 		FACC3DF4245EE8AA00EEA44C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = NN;
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = Alex;
 				TargetAttributes = {
@@ -99,7 +100,7 @@
 				};
 			};
 			buildConfigurationList = FACC3DF7245EE8AA00EEA44C /* Build configuration list for PBXProject "Translator_x86" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 11.4";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -139,6 +140,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -166,6 +168,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -197,6 +200,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_STATIC_ANALYZER_MODE = deep;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -223,6 +227,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -242,14 +247,21 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_TESTING_SEARCH_PATHS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
-				GENERATE_PROFILING_CODE = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				GENERATE_PROFILING_CODE = NO;
+				HEADER_SEARCH_PATHS = "/Users/alex/Desktop/my_libs/**";
+				INCLUDED_SOURCE_FILE_NAMES = /Users/alex/Desktop/my_libs;
+				LD_RUNPATH_SEARCH_PATHS = "\"$(my_libs)/\"";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 				TREAT_MISSING_BASELINES_AS_TEST_FAILURES = YES;
 			};
 			name = Debug;
@@ -259,14 +271,20 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_TESTING_SEARCH_PATHS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = NO;
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
-				GENERATE_PROFILING_CODE = YES;
+				GENERATE_PROFILING_CODE = NO;
+				HEADER_SEARCH_PATHS = "/Users/alex/Desktop/my_libs/**";
+				INCLUDED_SOURCE_FILE_NAMES = /Users/alex/Desktop/my_libs;
+				LD_RUNPATH_SEARCH_PATHS = "\"$(my_libs)/\"";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
 				TREAT_MISSING_BASELINES_AS_TEST_FAILURES = YES;
 			};
 			name = Release;
