@@ -83,22 +83,22 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
 
 int main(int argc, const char* argv[]) {
     
-    if ((argc >= 2 && !strcmp(argv[1], "help")) || (argc < 3 || argc > 4)) {
+    if ((argc >= 2 && !strcmp(argv[1], "-help")) || (argc < 3 || argc > 4)) {
         cout << "Input format: \n";
         cout << "1)  Name of file with my_asm code\n";
         cout << "2)  Name out output executable file\n";
-        cout << "3*) \"asm\" if you want to get executable file from my_asm\n";
+        cout << "3*) \"-asm\" if you want to get executable file from my_asm\n";
         return 0;
     }
     
     bool binary_translate = true; // false means assembling from my_asm
     if (argc == 4) {
         
-        if (!strcmp(argv[3], "asm")) {
+        if (!strcmp(argv[3], "-asm")) {
             binary_translate = false;
         } else {
             cout << "Incorrect 3rd console argument\n";
-            cout << "To get more information use \"help\" flag\n";
+            cout << "To get more information use \"-help\" flag\n";
             return 0;
         }
         
@@ -371,9 +371,6 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
     command(mov_r8_memptr);
     
     while (p < p_end) {
-        
-        cout << *p << endl;
-        cout << my_asm_codes_size[*p] << endl;
         
         if (calls[p]) { // call jumps here
             labels_offsets[p] = offset;
