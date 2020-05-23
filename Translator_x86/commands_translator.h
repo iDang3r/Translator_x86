@@ -27,7 +27,7 @@
     if (labels[name_of_command] == 0)                \
         second_assembling = true                     \
 
-char* call(uint32_t addr) {
+char* call(uint32_t addr) {     // example of implementation with static struct
     
 #pragma pack(push, 1)
     static struct {
@@ -46,7 +46,7 @@ uint32_t call_size = 5;
 char* ret() {
     
     static char code[] = {
-        0xC3       // ret
+        0xC3
     };
     
     return code;
@@ -821,7 +821,7 @@ char* mov_r9_from_mem(uint32_t adr) {
     static char code[] = {
         0x45, 0x8B, 0x88, 0x39, 0x30, 0x00, 0x00
     };
-    std::cout << "adr: " <<  adr * 4 << std::endl;
+    
     *(uint32_t*)(code + 3) = adr * 4;
     return code;
 }

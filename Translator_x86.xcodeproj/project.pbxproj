@@ -26,6 +26,7 @@
 		FACC3DFC245EE8AA00EEA44C /* Translator_x86 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Translator_x86; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACC3DFF245EE8AA00EEA44C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FACC3E0624616FA500EEA44C /* commands_translator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = commands_translator.h; sourceTree = "<group>"; };
+		FAE9792B2478466D00DE1684 /* my_Mach_o_structs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = my_Mach_o_structs.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +61,7 @@
 			children = (
 				FACC3DFF245EE8AA00EEA44C /* main.cpp */,
 				FACC3E0624616FA500EEA44C /* commands_translator.h */,
+				FAE9792B2478466D00DE1684 /* my_Mach_o_structs.h */,
 			);
 			path = Translator_x86;
 			sourceTree = "<group>";
