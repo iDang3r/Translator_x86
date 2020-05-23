@@ -12,7 +12,6 @@
 #include <iomanip>
 #include "commands_translator.h"
 #include "my_map.h"
-#include <map>
 #include "super_define.h"
 #include "my_Mach_o_structs.h"
 #include "instructions.h"
