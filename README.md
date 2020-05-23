@@ -1,5 +1,9 @@
 # Translator_x86
-compiles my assembler language to Mac's Mach-o(64) executable file
+1) compiles my assembler language to Mac's Mach-o(64) executable file (use flag -asm)
+
+2) translates my_CPU_code to Mac's Mach-o(64) executable file
+
+To get more information use flag -help
 
 uses Mach-o files only with:
 - Mach64 header
@@ -14,8 +18,11 @@ uses Mach-o files only with:
   - Assembly
 - Section64 (__DATA, __data)
 
-Пример кода на ассемблере см. в example_asm.txt
+Пример кода на ассемблере см. в example_asm.txt(сгенерирован автоматически)
+
+Формат входных 
 
 Присутствует поддержка передачи аргументов функций через регистры (ax, bx, cx и dx) и/или через стек
+Обращение к памяти поддерживается по индексу или по смещению(only ax) + индекс
 
 данный язык ассемблера - Тьюринг-полный
