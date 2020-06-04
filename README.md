@@ -1,9 +1,9 @@
 # Translator_x86
-1) compiles my assembler language to Mac's Mach-o(64) executable file (use flag -asm)
+1) compiles my assembler language to Mac's Mach-o(64) executable file (use flag '-asm')
 
 2) translates my_CPU_code to Mac's Mach-o(64) executable file
 
-To get more information use flag -help
+To get more information use flag '-help'
 
 uses Mach-o files only with:
 - Mach64 header
@@ -29,8 +29,8 @@ uses Mach-o files only with:
 
 Ускорение, полученное относительно моего эмулятора CPU:
 
-Emulate CPU | x86_CPU
-------------|--------
+Emulate CPU |   x86_CPU
+------------|--------------
 28.4867 sec.| 0.000326 sec.
 
 Ускорение: 87 тысяч раз
