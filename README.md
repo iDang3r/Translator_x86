@@ -18,7 +18,7 @@ uses Mach-o files only with:
   - Assembly
 - Section64 (__DATA, __data)
 
-Пример кода на ассемблере см. в example_asm.txt(сгенерирован автоматически)
+Пример кода на ассемблере см. в [example_asm.txt](https://github.com/iDang3r/Translator_x86/blob/master/example_asm.txt)(сгенерирован автоматически)
 
 Формат входных 
 
