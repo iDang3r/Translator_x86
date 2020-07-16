@@ -31,7 +31,7 @@ uint32_t  scan_offset = 0;       // посчитаем позже
 uint32_t print_offset = 0;       // посчитаем позже
 uint32_t   end_offset = 0x1000;
 
-uint32_t code_size_offset = 0;
+uint32_t code_size_offset = 0;   // посчитаем позже
 
 }
 
@@ -40,6 +40,8 @@ namespace consts {
 const uint32_t precision = 100;
 
 }
+
+///---->// Getting my_asm codes
 
 #define DEF_CMD(name, num, next, cpu_code, disasm_code) \
     name##_ = num,
@@ -52,7 +54,7 @@ enum my_asm_codes {
 
 #undef DEF_CMD
 
-    // Getting registers numbres
+///---->// Getting registers numbres
     
 #define DEF_REG(name, num) \
     reg_##name = num,
@@ -108,14 +110,18 @@ int main(int argc, const char* argv[]) {
         cout << "output file was not opened or created" << endl;
         return 0;
     }
-    
+    // ПМИ АААААААаааа
     char* buff = reinterpret_cast<char*>(calloc(offsets::size, sizeof(char)));
     if (buff == nullptr) {
         throw runtime_error("Calloc did not allocate memory");
     }
     uint32_t buff_size = offsets::size;
+    
     uint32_t offset = make_header(buff, offsets::size);
     offset = offsets::main_offset;
+    
+//    Hash_table<int, int>* hash_t = new Hash_table<int, int>();
+//    char* buff_ch = new char[100] {0};
     
     FILE* asm_file = fopen(argv[1], "rb");
     if (asm_file == nullptr) {
@@ -132,10 +138,10 @@ int main(int argc, const char* argv[]) {
     char* p     = lang_asm;
     char* p_end = lang_asm + lang_asm_size;
     
-    bool need_second_assembling = false;
+    bool need_second_running = false;
     
     if (binary_translate) {
-        Hash_table<char, int> my_asm_codes_size;
+        Hash_table<char, int>   my_asm_codes_size;
         Hash_table<char*, bool> calls, labels;
             
         // Getting commands sizes
@@ -150,10 +156,10 @@ int main(int argc, const char* argv[]) {
         find_calls_and_labels_translating(p, p_end, calls, labels, my_asm_codes_size);
         
         Hash_table<char*, uint32_t> labels_offsets;
-        translating(buff, buff_size, offset, p, p_end, labels, need_second_assembling, calls, my_asm_codes_size, labels_offsets);
+        translating(buff, buff_size, offset, p, p_end, labels, need_second_running, calls, my_asm_codes_size, labels_offsets);
         
-        if (need_second_assembling) {
-            translating(buff, buff_size, offset, p, p_end, labels, need_second_assembling, calls, my_asm_codes_size, labels_offsets);
+        if (need_second_running) {
+            translating(buff, buff_size, offset, p, p_end, labels, need_second_running, calls, my_asm_codes_size, labels_offsets);
         }
         
     } else {
@@ -163,10 +169,10 @@ int main(int argc, const char* argv[]) {
         
         find_calls_assembling(p, p_end, calls);
         
-        assembling(buff, buff_size, offset, p, p_end, labels, need_second_assembling, calls);
+        assembling(buff, buff_size, offset, p, p_end, labels, need_second_running, calls);
         
-        if (need_second_assembling) {
-            assembling(buff, buff_size, offset, p, p_end, labels, need_second_assembling, calls);
+        if (need_second_running) {
+            assembling(buff, buff_size, offset, p, p_end, labels, need_second_running, calls);
         }
         
     }
@@ -361,7 +367,7 @@ uint32_t make_header(char* buff, uint32_t buff_size) {
 }
 
 void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p_end,
-                 Hash_table<char*, bool> &labels, bool &second_assembling, Hash_table<char*, bool> &calls,
+                 Hash_table<char*, bool> &labels, bool &second_translating, Hash_table<char*, bool> &calls,
                  Hash_table<char, int> &my_asm_codes_size, Hash_table<char*, uint32_t> &labels_offsets) {
 
     char* p_begin = p;
@@ -586,7 +592,7 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
             case call_:
                 
                 if (labels_offsets[p_begin + *(uint32_t*)(p + 1)] == 0) {
-                    second_assembling = true;
+                    second_translating = true;
                 }
                 
                 command(save_ret);
@@ -605,7 +611,7 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
             case jmp_:
                 
                 if (labels_offsets[p_begin + *(uint32_t*)(p + 1)] == 0) {
-                    second_assembling = true;
+                    second_translating = true;
                 }
                 
                 jump(jmp, labels_offsets[p_begin + *(uint32_t*)(p + 1)]);
@@ -613,9 +619,10 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
                 break;
                 
 #define DEF_JMP(name, num, op)                                              \
+                                                                            \
             case name##_:                                                   \
                 if (labels_offsets[p_begin + *(uint32_t*)(p + 1)] == 0) {   \
-                    second_assembling = true;                               \
+                    second_translating = true;                              \
                 }                                                           \
                 jump(name, labels_offsets[p_begin + *(uint32_t*)(p + 1)]);  \
                 break;
@@ -626,7 +633,7 @@ void translating(char* buff, size_t buff_size, uint32_t offset, char* p, char* p
                 
         }
         
-        p += my_asm_codes_size[*p];
+        p += my_asm_codes_size[*p]; // сдвиг указателя к следующей команде(на размер текущей команды)
     }
     
     command(program_end);
